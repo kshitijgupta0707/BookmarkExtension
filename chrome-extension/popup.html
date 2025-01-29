@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bookmark Saver</title>
+      <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="loginPage">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button id="loginBtn">Login</button>
+    
+    <h3>New User?</h3>
+    <input type="text" id="signupName" placeholder="Name">
+    <input type="email" id="signupEmail" placeholder="Email">
+    <input type="password" id="signupPassword" placeholder="Password">
+    <input type="password" id="signupConfirmPassword" placeholder="ConfirmPassword">
+    <button id="signupBtn">Signup</button>
+  </div>
+
+  <div id="homePage" style="display: none;">
+    <h2>Saved Bookmarks</h2>
+    <ul id="bookmarksList"></ul>
+    <button id="logoutBtn">Logout</button>
+  </div>
+
+  <script  src="popup.js"></script>
+</body>
+</html>

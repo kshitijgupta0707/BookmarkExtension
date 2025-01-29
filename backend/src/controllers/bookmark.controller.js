@@ -10,4 +10,12 @@ export const saveBookmark = async (req, res) =>{
         res.status(500).json({ error: "Failed to save bookmark" });
       } 
 }
+export const getAllBookmarks = async (req, res) =>{
+    try {
+        const bookmarks = await Bookmark.find({ userId: req.user._id });
+        res.json(bookmarks);
+      } catch (error) {
+        res.status(500).json({ error: "Failed to fetch bookmarks" });
+      }
+}
 

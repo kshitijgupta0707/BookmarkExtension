@@ -2,6 +2,7 @@ import express from 'express'
 import { dbConnect } from './config/database.js'
 //googgle login
 import authRoutes from './routes/auth.route.js'
+import bookmarkRoute from './routes/bookmark.route.js'
 // import googleAuth from "./routes/authRoutes.js"
 // import geminiRouter from "./routes/gemini.route.js"
 import cookieParser from 'cookie-parser'
@@ -30,6 +31,7 @@ app.use(cookieParser());
 // ))
 //merging the router with server
 app.use("/api/auth", authRoutes);
+app.use("/api/", bookmarkRoute);
 
 // /AUTH/GOOGLE/CALLBACK
 // app.use("/auth", googleAuth);
