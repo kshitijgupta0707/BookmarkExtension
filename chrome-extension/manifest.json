@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Auto Bookmark Saver",
+    "name": "Ai Powered BookMark Saver",
     "version": "1.0",
     "permissions": ["bookmarks", "storage", "activeTab"],
     "host_permissions": ["http://localhost:3002/*"],
@@ -11,4 +11,4 @@
       "default_popup": "popup.html"
     }
 }
-  
+    
