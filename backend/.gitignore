@@ -1,0 +1,55 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build files
+dist/
+build/
+.cache/
+
+# Editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# React.js specific
+public/*.cache
+public/*.map
+coverage/
+*.cache
+
+# OS-related files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.bak
+*.swp
+*.swo
+*.swn
+
+# MongoDB
+data/
+dump/
+*.lock
+
+# Git
+.git/
+.env
