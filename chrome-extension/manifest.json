@@ -3,12 +3,15 @@
     "name": "Ai Powered BookMark Saver",
     "version": "1.0",
     "permissions": ["bookmarks", "storage", "activeTab"],
-    "host_permissions": ["http://localhost:3002/*"],
+    "host_permissions": ["<all_urls>"],
     "background": {
       "service_worker": "background.js"
     },
     "action": {
       "default_popup": "popup.html"
-    }
+    },
+    "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }
     

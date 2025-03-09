@@ -1,4 +1,29 @@
+// anime({
+//   targets: "#loginPage",
+//   translateX: [100, 0], // Move from right
+//   opacity: [0, 1], // Fade in
+//   duration: 1000,
+//   easing: "easeOutExpo"
+// });
+// document.getElementById("showSignup").addEventListener("click", () => {
+//   anime({
+//     targets: "#signupPage",
+//     translateX: [100, 0],
+//     opacity: [0, 1],
+//     duration: 800,
+//     easing: "easeOutExpo"
+//   });
+// });
+// anime({
+//   targets: "#bookmarksList li",
+//   opacity: [0, 1],
+//   translateY: [10, 0], // Small bounce up
+//   delay: anime.stagger(200), // Delay each list item
+//   easing: "easeOutQuad"
+// });
+
 // Function to handle signup
+
 const signup = async () => {
     const name = document.getElementById("signupName").value;
     const email = document.getElementById("signupEmail").value;

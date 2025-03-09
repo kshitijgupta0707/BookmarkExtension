@@ -8,7 +8,8 @@ export const signup = async (req, res) => {
   try {
     //fetch the data from the request
     const { name ,email, password, confirmPassword } = req.body
-    // console.log(firstName, lastName, email, password, confirmPassword);
+
+    console.log(name  , email, password, confirmPassword);
 
     //check if some data is missing
     if (!name || !email || !password || !confirmPassword ) {
