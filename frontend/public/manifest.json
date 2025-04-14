@@ -1,15 +1,21 @@
 {
-    "manifest_version": 3,
-    "name": "My Chrome Extension",
-    "version": "1.0",
-    "description": "A simple React-based Chrome extension",
-    "action": {
-      "default_popup": "./index.html",
-      "default_icon": "./icon.jpg"
-    },
-    "permissions": ["storage"],
-    "background": {
-      "service_worker": "background.js"
+  "manifest_version": 3,
+  "name": "AI Bookmark Manager",
+  "version": "1.0",
+  "description": "Smart AI bookmark categorization",
+  "action": {
+    "default_popup": "./index.html",
+    "default_icon": "./icon.jpg"
+  },
+  "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
     }
-  }
-  
+  ]
+
+}

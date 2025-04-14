@@ -1,38 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import Login from "./components/Login/Login";
+import BookmarkList from "./components/BookmarkList/BookmarkList";
+import SettingsMenu from "./components/SettingsMenu/SettingsMenu";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    chrome.storage.sync.get("user", (data) => setUser(data.user || null));
+  }, []);
 
   return (
-    <>
-      <div>
-        <p>lc;sjcv;lxdsjv;lcskv;sc;'kldcfc
-          ;'sdfllcvbkcfl;'kv;'sdfkv,p;''
-        </p>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    // <div className="w-80 p-4">
+    //   <SettingsMenu />
+    //   {!user ? <Login setUser={setUser} /> : <BookmarkList user={user} />}
+    // </div>
+    <div>
+      <h1 className="text-2xl font-bold">Bookmark Manager</h1>
+      <SettingsMenu />
+      {!user ? (
+        <Login setUser={setUser} />
+      ) : (
+        <div className="w-80 p-4">
+          <BookmarkList user={user} />
+        </div>
+      )}
+      {/* <div className="w-80 p-4">
+        <SettingsMenu />
+        {!user ? <Login setUser={setUser} /> : <BookmarkList user={user} />}
+      </div> */}
+    </div>
+  );
+};
 
-export default App
+export default App;
