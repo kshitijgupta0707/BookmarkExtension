@@ -9,26 +9,33 @@ const BookmarkList = ({ user }) => {
       method: "GET",
     })
       .then((res) => res.json())
-      .then((data) => setBookmarks(data));
+      .then((data) => {
+       console.log("data is " , data)
+        setBookmarks(data);
+
+      })
   }, []);
 
+  useEffect(()=>{
+    console.log("Book Marks " , bookmarks)
+  },[bookmarks])
+
+ 
   return (
     <div>
       <h2 className="text-lg font-bold">Your Bookmarks</h2>
-      {Object.entries(bookmarks).map(([category, items]) => (
-        <div key={category}>
-          <h3>{category}</h3>
-          <ul>
-            {items.map((bookmark) => (
-              <li key={bookmark.id}>
-                <a href={bookmark.url} target="_blank">{bookmark.title}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <ul>
+        {bookmarks.map((bookmark) => (
+          <li key={bookmark.id}>
+            <a href={bookmark.url} target="_blank" rel="noopener noreferrer">
+              {bookmark.title}
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
+  
 };
 
 export default BookmarkList;
