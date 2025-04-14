@@ -1,93 +1,52 @@
-// // chrome.runtime.onInstalled.addListener(() => {
-// //   chrome.contextMenus.create({
-// //     id: "saveBookmark",
-// //     title: "Save to AI Bookmark",
-// //     contexts: ["page"]
-// //   });
-// // });
+// chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {
+//   const token = await chrome.storage.sync.get("token"); // Retrieve JWT token
+//   console.log(token)
+//   console.log("i am here")
+//   if (!token.token) return;
 
-// // chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-// //   const { user } = await chrome.storage.sync.get("user");
-// //   if (!user) {
-// //     alert("Please log in to save bookmarks.");
-// //     return;
-// //   }
+//   fetch("http://localhost:5000/api/bookmarks", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: token.token,
+//     },
+//     body: JSON.stringify({
+//       title: bookmark.title,
+//       url: bookmark.url,
+//     }),
+//   })
+//     .then((response) => response.json())
+//     .then((data) => console.log("Bookmark saved:", data))
+//     .catch((error) => console.error("Error saving bookmark:", error));
 
-// //   await fetch("https://localhost:5000/api/bookmarks", {
-// //     method: "POST",
-// //     headers: {
-// //       "Content-Type": "application/json",
-// //       Authorization: `Bearer ${user.token}`,
-// //     },
-// //     body: JSON.stringify({ title: tab.title, url: tab.url }),
-// //   });
-
-// //   alert("Bookmark saved!");
-// // });
-
-
-// // Register context menu on install
-// chrome.runtime.onInstalled.addListener(() => {
-//   chrome.contextMenus.removeAll(() => {
-//     chrome.contextMenus.create({
-//       id: "saveBookmark",
-//       title: "Save to AI Bookmark",
-//       contexts: ["page"]
-//     });
-//     console.log("Context menu created on install");
-//   });
+//   console.log("bhaiiii")
 // });
 
-// // Also register it on browser startup
-// chrome.runtime.onStartup.addListener(() => {
-//   chrome.contextMenus.removeAll(() => {
-//     chrome.contextMenus.create({
-//       id: "saveBookmark",
-//       title: "Save to AI Bookmark",
-//       contexts: ["page"]
-//     });
-//     console.log("Context menu created on startup");
-//   });
-// });
 
-// // Handle context menu click
-// chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-//   if (info.menuItemId === "saveBookmark") {
-//     try {
-//       const { user } = await chrome.storage.sync.get("user");
-//       if (!user || !user.token) {
-//         chrome.scripting.executeScript({
-//           target: { tabId: tab.id },
-//           func: () => alert("Please log in to save bookmarks."),
-//         });
-//         return;
-//       }
 
-//       await fetch("https://localhost:5000/api/bookmarks", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${user.token}`,
-//         },
-//         body: JSON.stringify({ title: tab.title, url: tab.url }),
-//       });
+chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {
+  const { user } = await chrome.storage.sync.get("user");
+  console.log("user", user)
+  console.log("i am here")
+  if (!user.token) return;
 
-//       chrome.scripting.executeScript({
-//         target: { tabId: tab.id },
-//         func: () => alert("Bookmark saved!"),
-//       });
-//     } catch (err) {
-//       console.error("Error saving bookmark:", err);
-//       chrome.scripting.executeScript({
-//         target: { tabId: tab.id },
-//         func: () => alert("Failed to save bookmark."),
-//       });
-//     }
-//   }
-// });
+  fetch("http://localhost:5000/api/bookmarks", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${user.token}`,
+    },
+    body: JSON.stringify(
+      {
+        title: bookmark.title,
+        url: bookmark.url,
+      },
+    ),
+  })
+    .then((response) => response.json())
+    .then((data) => console.log("Bookmark saved:", data))
+    .catch((error) => console.error("Error saving bookmark:", error));
 
-chrome.bookmarks.onCreated.addListener((id, bookmark) => {
-  console.log("User bookmarked:", bookmark.url);
-  // Optionally send this to your backend or sync it
+  console.log("bhaiiii")
 });
 

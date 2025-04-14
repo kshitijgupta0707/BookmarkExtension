@@ -4,7 +4,7 @@ chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {
    console.log("i am here")
     if (!token.token) return;
   
-    fetch("http://localhost:3002/api/save-bookmark", {
+    fetch("http://localhost:5000/api/save-bookmark", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
