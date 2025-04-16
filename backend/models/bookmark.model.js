@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
-const BookmarkSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  title: String,
-  url: String,
-  category: String,
-  createdAt: { type: Date, default: Date.now },
-  visitCount: { type: Number, default: 0 }
-});
 
+const bookmarkSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    url: { type: String, required: true },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    mlCategory: { type: String }, // initially suggested category
+  },
+  { timestamps: true }
+);
 
-const Bookmark = mongoose.model("Bookmark", BookmarkSchema);
-export default Bookmark;
+export default mongoose.model("Bookmark", bookmarkSchema);
