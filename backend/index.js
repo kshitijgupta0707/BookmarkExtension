@@ -3,8 +3,11 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
-import bookmarkRoutes from "./routes/bookmark.route.js";
 import ExpressError from "./utils/ExpressError.js";
+import categoryRoutes from "./routes/category.route.js"
+import bookmarkRoutes from "./routes/bookmark.route.js"
+import { authenticate } from "./middlewares/auth.middleware.js";
+import cookieParser from "cookie-parser";
 
 
 // Load environment variables
@@ -20,6 +23,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser()); 
 
 // Database Connection
 const DB_URL = process.env.MONGO_URI;
@@ -27,15 +31,19 @@ mongoose.connect(DB_URL);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"))
 db.once("open", () => {
-    console.log("Database connected")
+  console.log("Database connected")
 });
 
+// Health check route
+app.get("/", (req, res) => {
+  res.send(" Bookmark Organizer Server Running");
+});
+
+
+
 app.use('/api/auth', authRoutes);
-app.use('/api/bookmarks', bookmarkRoutes);
-// app.use('/api/media', mediaRoutes);
-// app.use('/api/history', historyRoutes);
-// app.use("/api/watchlist", watchlistRoutes);
-// app.use("/api/progress", watchProgressRoutes);
+app.use("/api/categories", authenticate, categoryRoutes);
+app.use("/api/bookmarks", authenticate, bookmarkRoutes);
 
 // 404 Error Handling
 app.all("*", (req, res, next) => {
