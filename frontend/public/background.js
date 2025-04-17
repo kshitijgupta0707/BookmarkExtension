@@ -24,13 +24,18 @@
 
 
 
-chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {
+chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {``
   const { user } = await chrome.storage.sync.get("user");
   console.log("user", user)
   console.log("i am here")
   if (!user.token) return;
 
-  fetch("http://localhost:5000/api/bookmarks", {
+
+  //is mein category bhi bhejni hain jo abhi ke liye mein 68011b6a758a18514de7b7df set krra backend mein
+  // ml categroy jayegi yha se 
+  ///fir muuje if ml category ke name ki category exist hogi toh usmein backend mein add hogi nhi toh backend mein he create hogi
+
+  fetch("http://localhost:5000/api/bookmarks/create", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

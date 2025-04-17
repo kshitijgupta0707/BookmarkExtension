@@ -38,15 +38,24 @@ import Bookmark from "../models/bookmark.model.js";
 // Create a new bookmark
 export const createBookmark = async (req, res) => {
   try {
-    console.log("I am here")
+    console.log("I am here ffffff")
+    console.log(req)
     const { title, url, category, mlCategory } = req.body;
+    console.log(title , url , category , mlCategory)
+   
+    //TO DO 
+  ///fir muuje if ml category ke name ki category exist hogi toh usmein backend mein add hogi nhi toh backend mein he create hogi
+ 
+
+  
     const newBookmark = await Bookmark.create({
       title,
       url,
-      category,
+      category: "68011b6a758a18514de7b7df",
       mlCategory,
       userId: req.user._id,
     });
+    console.log(newBookmark)
     res.status(201).json(newBookmark);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -58,8 +67,19 @@ export const getBookmarksByCategory = async (req, res) => {
   try {
     const categoryId = req.params.categoryId;
     const bookmarks = await Bookmark.find({
-      userId: req.userId,
+      userId: req.user._id,
       category: categoryId,
+    });
+    res.json(bookmarks);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+//  Get all bookmarks in a specific category (with subcategories optional)
+export const getBookmarks = async (req, res) => {
+  try {
+    const bookmarks = await Bookmark.find({
+      userId: req.user._id,
     });
     res.json(bookmarks);
   } catch (err) {
@@ -72,7 +92,7 @@ export const updateBookmark = async (req, res) => {
   try {
     const { title, url, category } = req.body;
     const updated = await Bookmark.findOneAndUpdate(
-      { _id: req.params.id, userId: req.userId },
+      { _id: req.params.id, userId: req.user._id },
       { title, url, category },
       { new: true }
     );
@@ -85,7 +105,7 @@ export const updateBookmark = async (req, res) => {
 //  Delete bookmark
 export const deleteBookmark = async (req, res) => {
   try {
-    await Bookmark.findOneAndDelete({ _id: req.params.id, userId: req.userId });
+    await Bookmark.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
     res.json({ message: "Bookmark deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -97,7 +117,7 @@ export const moveBookmark = async (req, res) => {
   try {
     const { newCategoryId } = req.body;
     const moved = await Bookmark.findOneAndUpdate(
-      { _id: req.params.id, userId: req.userId },
+      { _id: req.params.id, userId: req.user._id },
       { category: newCategoryId },
       { new: true }
     );

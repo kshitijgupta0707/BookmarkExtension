@@ -19,13 +19,15 @@ import {
   updateBookmark,
   deleteBookmark,
   moveBookmark,
+  getBookmarks
 } from "../controllers/bookmark.controller.js";
 // import { authMiddleware } from "../middleware.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 // router.use(authenticate);
-router.post("/", createBookmark);
+router.get("/", getBookmarks);
+router.post("/create", createBookmark);
 router.get("/category/:categoryId", getBookmarksByCategory);
 router.put("/:id", updateBookmark);
 router.delete("/:id", deleteBookmark);

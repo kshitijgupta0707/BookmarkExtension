@@ -11,10 +11,7 @@ const App = () => {
   }, []);
 
   return (
-    // <div className="w-80 p-4">
-    //   <SettingsMenu />
-    //   {!user ? <Login setUser={setUser} /> : <BookmarkList user={user} />}
-    // </div>
+    
     <div>
       <h1 className="text-2xl font-bold">Bookmark Manager</h1>
       <SettingsMenu />
@@ -25,10 +22,7 @@ const App = () => {
           <BookmarkList user={user} />
         </div>
       )}
-      {/* <div className="w-80 p-4">
-        <SettingsMenu />
-        {!user ? <Login setUser={setUser} /> : <BookmarkList user={user} />}
-      </div> */}
+    
     </div>
   );
 };
