@@ -18,12 +18,13 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "chrome-extension://ajjjglminmeilfbmmjedhilnkemeokbh",
+    origin: ["chrome-extension://ajjjglminmeilfbmmjedhilnkemeokbh", "http://localhost:5173"],
+    credentials: true
   })
 );
 
 app.use(express.json());
-app.use(cookieParser()); 
+app.use(cookieParser());
 
 // Database Connection
 const DB_URL = process.env.MONGO_URI;
@@ -57,12 +58,10 @@ app.use((err, req, res, next) => {
   console.log(err);
   res.status(statusCode).json(err.message);
 });
-
 if (process.env.NODE_ENV !== "test") {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
 }
-
 export default app

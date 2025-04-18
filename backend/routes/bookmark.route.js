@@ -29,8 +29,8 @@ const router = express.Router();
 router.get("/", getBookmarks);
 router.post("/create", createBookmark);
 router.get("/category/:categoryId", getBookmarksByCategory);
-router.put("/:id", updateBookmark);
-router.delete("/:id", deleteBookmark);
+router.put("/update/:id", updateBookmark);
+router.delete("/delete/:id", deleteBookmark);
 router.put("/move/:id", moveBookmark);
 
 export default router;

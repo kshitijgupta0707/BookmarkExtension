@@ -13,10 +13,10 @@ const router = express.Router();
 
 // router.use(authenticate); // assumes user is authenticated
 
-router.post("/", createCategory);
+router.post("/create", createCategory);
 router.get("/tree", getCategoryTree);
-router.put("/:id", updateCategory);
-router.delete("/:id", deleteCategory);
+router.put("/update/:id", updateCategory);
+router.delete("/delete/:id", deleteCategory);
 router.put("/move/:id", moveCategory);
 
 export default router;

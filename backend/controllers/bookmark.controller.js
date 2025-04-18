@@ -51,7 +51,7 @@ export const createBookmark = async (req, res) => {
     const newBookmark = await Bookmark.create({
       title,
       url,
-      category: "68011b6a758a18514de7b7df",
+      category,
       mlCategory,
       userId: req.user._id,
     });
@@ -80,7 +80,7 @@ export const getBookmarks = async (req, res) => {
   try {
     const bookmarks = await Bookmark.find({
       userId: req.user._id,
-    });
+    }).populate("category");
     res.json(bookmarks);
   } catch (err) {
     res.status(500).json({ error: err.message });

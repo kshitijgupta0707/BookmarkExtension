@@ -3,12 +3,14 @@ import Category from "../models/category.model.js";
 //  Create a new category
 export const createCategory = async (req, res) => {
   try {
+    console.log("Createing the category" , req.body)
     const { name, parent } = req.body;
     const category = await Category.create({
       name,
       parent: parent || null,
       userId: req.user._id,
     });
+    console.log("Category created", category)
     res.status(201).json(category);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -28,8 +30,9 @@ const buildTree = (categories, parent = null) => {
 
 export const getCategoryTree = async (req, res) => {
   try {     
+    console.log("user agya hain", req.user._id)
     const allCategories = await Category.find({ userId: req.user._id });
-  
+     console.log(allCategories)
     const tree = buildTree(allCategories);
     res.json(tree);
   } catch (err) {
