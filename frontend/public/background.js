@@ -1,35 +1,12 @@
-// chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {
-//   const token = await chrome.storage.sync.get("token"); // Retrieve JWT token
-//   console.log(token)
-//   console.log("i am here")
-//   if (!token.token) return;
 
-//   fetch("http://localhost:5000/api/bookmarks", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: token.token,
-//     },
-//     body: JSON.stringify({
-//       title: bookmark.title,
-//       url: bookmark.url,
-//     }),
-//   })
-//     .then((response) => response.json())
-//     .then((data) => console.log("Bookmark saved:", data))
-//     .catch((error) => console.error("Error saving bookmark:", error));
+// This line registers a listener that fires whenever a new bookmark is created in Chrome
+chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {
 
-//   console.log("bhaiiii")
-// });
-
-
-
-chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {``
+  //For the authentication part, we are using the chrome.storage API to store and retrieve the user's authentication token.
   const { user } = await chrome.storage.sync.get("user");
-  console.log("user", user)
-  console.log("i am here")
   if (!user.token) return;
-
+  
+  console.log("Bookmark created:", bookmark , id);
 
   //is mein category bhi bhejni hain jo abhi ke liye mein 68011b6a758a18514de7b7df set krra backend mein
   // ml categroy jayegi yha se 
@@ -52,6 +29,5 @@ chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {``
     .then((data) => console.log("Bookmark saved:", data))
     .catch((error) => console.error("Error saving bookmark:", error));
 
-  console.log("bhaiiii")
 });
 

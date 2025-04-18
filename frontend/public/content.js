@@ -14,16 +14,19 @@ button.style.zIndex = "9999";
 
 // Click event to save bookmark
 button.addEventListener("click", async () => {
+  console.log("Button clicked!");
+
   const { user } = await chrome.storage.sync.get("user");
   if (!user) {
     alert("Please log in to save bookmarks.");
     return;
   }
-
+   alert("Saving bookmark...");
   const title = document.title;
   const url = window.location.href;
-
-  await fetch("https://localhost:5000/api/bookmarks", {
+ console.log("Title: ", title);
+  console.log("URL: ", url);
+  await fetch("https://localhost:5000/api/bookmarks/create", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -31,6 +34,11 @@ button.addEventListener("click", async () => {
     },
     body: JSON.stringify({ title, url }),
   });
+
+
+ 
+
+
 
   alert("Bookmark saved!");
 });
