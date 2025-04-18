@@ -130,21 +130,21 @@ export const Login = ({ setUser }) => {
 
     try {
       // For demo purposes, simulate login if no backend is available
-      if (process.env.NODE_ENV === 'development' || !window.location.hostname.includes('localhost')) {
-        setTimeout(() => {
-          const mockUser = {
-            token: "mock-token-12345",
-            userId: "user123",
-            name: formData.name || "Demo User",
-            email: formData.email
-          };
-          setUser(mockUser);
-          safeStorage.set({ token: mockUser.token, userId: mockUser.userId, name: mockUser.name, user: mockUser });
-          setIsLoading(false);
-        }, 800);
-        return;
-      }
-
+      // if (process.env.NODE_ENV === 'development' || !window.location.hostname.includes('localhost')) {
+      //   setTimeout(() => {
+      //     const mockUser = {
+      //       token: "mock-token-12345",
+      //       userId: "user123",
+      //       name: formData.name || "Demo User",
+      //       email: formData.email
+      //     };
+      //     setUser(mockUser);
+      //     safeStorage.set({ token: mockUser.token, userId: mockUser.userId, name: mockUser.name, user: mockUser });
+      //     setIsLoading(false);
+      //   }, 800);
+      //   return;
+      // }
+     console.log(e)
       const response = await fetch(`http://localhost:5000/api/auth/${isSignup ? "signup" : "login"}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

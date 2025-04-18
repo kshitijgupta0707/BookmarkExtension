@@ -135,7 +135,8 @@ const App = () => {
             />
           </div>
           <div className="mt-2 text-sm text-muted-foreground text-center">
-            {user ? `Signed in as ${user.name}` : 'Sign in to manage your bookmarks'}
+            {console.log("User data:", user)}
+            {user ? `Signed in as ${user.responseUser.name}` : 'Sign in to manage your bookmarks'}
           </div>
         </header>
         

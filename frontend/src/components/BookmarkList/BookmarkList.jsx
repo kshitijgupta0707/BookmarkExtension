@@ -57,7 +57,7 @@ export const BookmarkList = ({ user }) => {
   if (bookmarks.length === 0) {
     return (
       <div className="text-center p-6 rounded-lg bg-secondary/50 mt-4">
-        <Bookmark className="mx-auto mb-2 text-muted-foreground" size={24} />
+        <BookmarkCard className="mx-auto mb-2 text-muted-foreground" size={24} />
         <p className="text-muted-foreground">No bookmarks found. Add some to get started!</p>
       </div>
     );
