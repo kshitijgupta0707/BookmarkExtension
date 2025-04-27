@@ -11,6 +11,7 @@ import { AuthLayout } from "./AuthLayout";
 import { FormField } from "./FormField";
 import { PasswordField } from "./PasswordField";
 import { AuthFooter } from "./AuthFooter";
+import { useAuthStore } from "@/store/useAuthStore";
 export default function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -21,6 +22,14 @@ export default function Signup() {
         e.preventDefault();
         // Handle signup logic here
         console.log("Signup with:", { name, email, password });
+        // Call your signup API here
+        // For example, using the useAuthStore to handle signup
+        const { signup } = useAuthStore.getState();
+        signup({ name, email, password }, navigate);
+        // After successful signup, you can navigate to another page or show a success message
+        // For example, you can use the navigate function to redirect the user
+
+
 
         // Navigate to dashboard or verification page on successful signup
         // navigate("/dashboard");

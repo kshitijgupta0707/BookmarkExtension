@@ -19,7 +19,8 @@ import {
   updateBookmark,
   deleteBookmark,
   moveBookmark,
-  getBookmarks
+  getBookmarks,
+  createBookmarkWithCategory,
 } from "../controllers/bookmark.controller.js";
 // import { authMiddleware } from "../middleware.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
@@ -28,6 +29,7 @@ const router = express.Router();
 // router.use(authenticate);
 router.get("/", getBookmarks);
 router.post("/create", createBookmark);
+router.post("/createwithcategory", createBookmarkWithCategory);
 router.get("/category/:categoryId", getBookmarksByCategory);
 router.put("/update/:id", updateBookmark);
 router.delete("/delete/:id", deleteBookmark);

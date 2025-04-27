@@ -196,11 +196,11 @@ import { useBookmarkStore } from "@/store/useBookmarkStore";
 
 export function BookmarkGrid({ bookmarks, categories, onCategorySelect }) {
   const { createBookmark } = useBookmarkStore();
-  const [newBookmark, setNewBookmark] = useState({ title: "", url: "", category: "" });
+  const [newBookmark, setNewBookmark] = useState({ title: "", url: ""});
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleAddBookmark = async () => {
-    if (newBookmark.title.trim() && newBookmark.url.trim() && newBookmark.category) {
+    if (newBookmark.title.trim() && newBookmark.url.trim()) {
       let url = newBookmark.url;
       if (!url.startsWith("http://") && !url.startsWith("https://")) {
         url = "https://" + url;
@@ -209,10 +209,9 @@ export function BookmarkGrid({ bookmarks, categories, onCategorySelect }) {
       await createBookmark({
         title: newBookmark.title,
         url: url,
-        category: newBookmark.category
       });
       
-      setNewBookmark({ title: "", url: "", category: "" });
+      setNewBookmark({ title: "", url: ""});
       setOpenDialog(false);
     }
   };
@@ -280,24 +279,7 @@ export function BookmarkGrid({ bookmarks, categories, onCategorySelect }) {
                   className="bg-gray-800 border-gray-700"
                 />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="category">Category</Label>
-                <Select 
-                  value={newBookmark.category} 
-                  onValueChange={(value) => setNewBookmark({ ...newBookmark, category: value })}
-                >
-                  <SelectTrigger className="bg-gray-800 border-gray-700">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-800">
-                    {flatCategories.map(cat => (
-                      <SelectItem key={cat._id} value={cat._id}>
-                        {cat.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              
               <Button onClick={handleAddBookmark}>Add Bookmark</Button>
             </div>
           </DialogContent>

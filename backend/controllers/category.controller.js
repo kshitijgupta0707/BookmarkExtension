@@ -4,10 +4,9 @@ import Category from "../models/category.model.js";
 export const createCategory = async (req, res) => {
   try {
     console.log("Createing the category" , req.body)
-    const { name, parent } = req.body;
+    const { name } = req.body;
     const category = await Category.create({
       name,
-      parent: parent || null,
       userId: req.user._id,
     });
     console.log("Category created", category)
@@ -17,25 +16,11 @@ export const createCategory = async (req, res) => {
   }
 };
 
-// Get all categories in nested structure
-const buildTree = (categories, parent = null) => {
-  return categories
-    .filter(cat => String(cat.parent) === String(parent))
-    .map(cat => ({
-      _id: cat._id,
-      name: cat.name,
-      children: buildTree(categories, cat._id),
-    }));
-};
-
 export const getCategoryTree = async (req, res) => {
-  try {     
-    console.log("user agya hain", req.user._id)
-    const allCategories = await Category.find({ userId: req.user._id });
-     console.log(allCategories)
-    const tree = buildTree(allCategories);
-    res.json(tree);
-  } catch (err) {
+  try {
+    const categories = await Category.find({ userId: req.user._id });
+    res.json(categories);
+  } catch (err) { 
     res.status(500).json({ error: err.message });
   }
 };

@@ -46,6 +46,21 @@ export const useBookmarkStore = create((set, get) => ({
     }
   },
 
+  createBookmarkwithExistingCategory: async (bookmarkData) => {
+    set({ loading: true }); 
+    try {
+      const res = await axiosInstance.post("/bookmarks/createwithcategory", bookmarkData);
+      set((state) => ({
+        bookmarks: [...state.bookmarks, res.data],
+      }));
+      toast.success("Bookmark created");
+    } catch (err) {
+      toast.error("Failed to create bookmark");
+    } finally {
+      set({ loading: false });
+    }
+  },
+
   updateBookmark: async (id, updatedData) => {
     set({ loading: true });
     try {

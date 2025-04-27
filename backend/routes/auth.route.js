@@ -3,7 +3,7 @@ import { signup, login , checkAuth} from "../controllers/auth.controller.js";
 import catchAsync from "../utils/CatchAsync.js";
 // import { protectRoute } from "../middleware.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
-
+ 
 
 const authRoutes = express.Router();
 

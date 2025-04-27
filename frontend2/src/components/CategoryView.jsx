@@ -167,7 +167,7 @@ import { useBookmarkStore } from "@/store/useBookmarkStore";
 import { useCategoryStore } from "@/store/useCategoryStore";
 
 function CategoryView({ category, bookmarks }) {
-  const { createBookmark, deleteBookmark, moveBookmark } = useBookmarkStore();
+  const { createBookmarkwithExistingCategory, deleteBookmark, moveBookmark,  } = useBookmarkStore();
   const { deleteCategory, moveCategory } = useCategoryStore();
   
   const [newBookmark, setNewBookmark] = useState({ title: "", url: "" });
@@ -189,14 +189,21 @@ function CategoryView({ category, bookmarks }) {
         url = "https://" + url;
       }
 
-      await createBookmark({
+      await createBookmarkwithExistingCategory({
         title: newBookmark.title,
         url,
-        category: category._id
+        category: category._id,
       });
+
+      console.log("Bookmark added:", newBookmark);
       
       setNewBookmark({ title: "", url: "" });
       setOpenDialog(false);
+
+
+      setTimeout(() => {
+        window.location.reload(); // Refresh the page to show the new bookmark
+      }, 100); // Adjust the timeout as needed
     }
   };
 

@@ -2,7 +2,7 @@
     import { axiosInstance } from "../lib/axios.js";
     import toast from "react-hot-toast";
 
-    const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/" : "https://pralaysetu-backend.onrender.com/";
+    const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:4000/" : "https://pralaysetu-backend.onrender.com/";
     export const useAuthStore = create((set) => ({
         authUser: null,
         formData: null,
@@ -30,7 +30,7 @@
             try {
                 const res = await axiosInstance.post("/auth/signup", data, {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type': 'application/json',
                     },
                 });
                 toast.success(res.data.message);

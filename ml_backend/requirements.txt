@@ -1,0 +1,9 @@
+flask==2.2.5
+werkzeug==2.3.7
+tensorflow
+numpy
+scikit-learn
+pandas
+beautifulsoup4
+requests
+tqdm

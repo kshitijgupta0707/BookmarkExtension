@@ -34,33 +34,91 @@
 // };
 
 import Bookmark from "../models/bookmark.model.js";
+import Category from "../models/category.model.js";
 
 // Create a new bookmark
 export const createBookmark = async (req, res) => {
   try {
     console.log("I am here ffffff")
-    console.log(req)
-    const { title, url, category, mlCategory } = req.body;
-    console.log(title , url , category , mlCategory)
-   
-    //TO DO 
-  ///fir muuje if ml category ke name ki category exist hogi toh usmein backend mein add hogi nhi toh backend mein he create hogi
- 
+    const { title, url} = req.body;
 
-  
+    const predictCategory = await fetch(
+      `http://127.0.0.1:5000/predict`,
+      {
+        method: "POST",
+        body: JSON.stringify({url, content: title}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("I am here")
+
+    const predictCategoryData = await predictCategory.json();
+    console.log(predictCategoryData)
+    console.log("I am here")
+    const existingCategory = await Category.findOne({
+      userId: req.user._id, 
+      name: predictCategoryData.category,
+    });
+
+    console.log("I am here")
+
+    if (existingCategory) {
+      const newBookmark = await Bookmark.create({
+        title,
+        url,
+        category : existingCategory._id,
+        userId: req.user._id,
+      });
+      console.log(newBookmark)
+      return res.status(201).json(newBookmark);
+    }
+
+    console.log("I am here")
+
+
+    const newCategory = await Category.create({
+      name: predictCategoryData.category,
+      userId: req.user._id,
+    });
+
     const newBookmark = await Bookmark.create({
       title,
       url,
-      category,
-      mlCategory,
+      category: newCategory._id,
       userId: req.user._id,
     });
+
+    console.log("I am here")
+    
     console.log(newBookmark)
     res.status(201).json(newBookmark);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const createBookmarkWithCategory = async (req, res) => {
+  try {
+    const { title, url, category } = req.body;
+    if (!title || !url) {
+      throw new Error("Title and URL are required");
+    }
+
+    const bookmark = new Bookmark({
+      userId: req.user._id,
+      title,
+      url,
+      category,
+    });
+    await bookmark.save();
+    res.status(201).json({ message: "Bookmark saved", bookmark });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
 
 //  Get all bookmarks in a specific category (with subcategories optional)
 export const getBookmarksByCategory = async (req, res) => {
@@ -75,6 +133,7 @@ export const getBookmarksByCategory = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 //  Get all bookmarks in a specific category (with subcategories optional)
 export const getBookmarks = async (req, res) => {
   try {

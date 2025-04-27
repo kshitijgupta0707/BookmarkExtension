@@ -58,6 +58,8 @@ app.use((err, req, res, next) => {
   console.log(err);
   res.status(statusCode).json(err.message);
 });
+
+
 if (process.env.NODE_ENV !== "test") {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
