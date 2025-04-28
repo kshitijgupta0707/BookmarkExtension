@@ -20,7 +20,7 @@ export const BookmarkList = ({ user }) => {
       return;
     }
 
-    fetch("http://localhost:4000/api/bookmarks", {
+    fetch("https://onebookmarker.onrender.com/api/bookmarks", {
       headers: { Authorization: `Bearer ${user.token}` },
       method: "GET",
     })

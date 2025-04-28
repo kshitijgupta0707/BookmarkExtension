@@ -68,7 +68,7 @@ export const Login = ({ setUser }) => {
       //   return;
       // }
      console.log(e)
-      const response = await fetch(`http://localhost:4000/api/auth/${isSignup ? "signup" : "login"}`, {
+      const response = await fetch(`https://onebookmarker.onrender.com/api/auth/${isSignup ? "signup" : "login"}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

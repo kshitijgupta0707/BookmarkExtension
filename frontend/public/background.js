@@ -12,7 +12,7 @@ chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {
   // ml categroy jayegi yha se 
   ///fir muuje if ml category ke name ki category exist hogi toh usmein backend mein add hogi nhi toh backend mein he create hogi
 
-  fetch("http://localhost:4000/api/bookmarks/create", {
+  fetch("https://onebookmarker.onrender.com/api/bookmarks/create", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
