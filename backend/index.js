@@ -18,7 +18,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: ["chrome-extension://ajjjglminmeilfbmmjedhilnkemeokbh", "http://localhost:5173"],
+    origin: ["chrome-extension://ajjjglminmeilfbmmjedhilnkemeokbh", "http://localhost:5173", "https://onebookmarker.vercel.app"],
     credentials: true
   })
 );
