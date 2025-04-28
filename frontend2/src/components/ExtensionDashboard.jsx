@@ -184,6 +184,7 @@ export default function ExtensionDashboard() {
             <CategoryView
               category={getCategoryWithChildren(selectedCategory)}
               bookmarks={bookmarks}
+              onBreadcrumbClick={handleBreadcrumbClick}
             />
           ) : (
             <BookmarkGrid

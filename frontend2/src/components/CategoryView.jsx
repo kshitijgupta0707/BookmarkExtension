@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useBookmarkStore } from "@/store/useBookmarkStore";
 import { useCategoryStore } from "@/store/useCategoryStore";
 
-function CategoryView({ category, bookmarks }) {
+function CategoryView({ category, bookmarks, onBreadcrumbClick }) {
   const navigate = useNavigate();
   const { createBookmark, createBookmarkwithExistingCategory, deleteBookmark, moveBookmark, updateBookmark } = useBookmarkStore();
   const { categories, deleteCategory, updateCategory } = useCategoryStore();
@@ -39,7 +39,7 @@ function CategoryView({ category, bookmarks }) {
       <div className="flex flex-col items-center justify-center h-64 bg-gray-800 rounded-lg text-gray-300">
         <h2 className="text-xl font-medium mb-4">Category not found</h2>
         <p className="text-gray-400 mb-6">The category may have been deleted or doesn't exist.</p>
-        <Button onClick={() => navigate("/categories")}>
+        <Button onClick={() => onBreadcrumbClick(0)} className="bg-purple-600 hover:bg-purple-700">
           Return to Categories
         </Button>
       </div>
@@ -142,7 +142,7 @@ function CategoryView({ category, bookmarks }) {
       try {
         await deleteCategory(category._id);
         // Navigate to categories list after successful deletion
-        navigate("/categories");
+        // navigate("/categories");
       } catch (error) {
         console.error("Error deleting category:", error);
       } finally {

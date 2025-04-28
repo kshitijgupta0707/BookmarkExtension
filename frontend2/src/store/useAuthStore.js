@@ -68,7 +68,7 @@
                 const res = await axiosInstance.post("/auth/loginWithoutPassword", data);
                 set({ authUser: res.data.responseUser });
 
-                toast.success("Logged in successfully ");
+                // toast.success("Logged in successfully ");
             } catch (error) {
                 toast.error(error.response.data.message);
             } finally {

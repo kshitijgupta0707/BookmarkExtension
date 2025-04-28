@@ -6,28 +6,29 @@ export const createBookmark = async (req, res) => {
     console.log("create book mark called")
     const { title, url} = req.body;
 
-    // const predictCategory = await fetch(
-    //   `http://127.0.0.1:5000/predict`,
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({url, content: title}),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
+    const predictCategory = await fetch(
+      `http://127.0.0.1:5000/predict`,
+      {
+        method: "POST",
+        body: JSON.stringify({url, content: title}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    console.log("I am here")
+    const predictCategoryData = await predictCategory.json();
+    console.log(predictCategoryData)
+    
 
-    // const predictCategoryData = await predictCategory.json();
-    // console.log(predictCategoryData)
-    console.log("I am here")
+
     const existingCategory = await Category.findOne({
       userId: req.user._id, 
-      name: "facebook",
+      name: predictCategoryData.category,
     });
 
-    console.log("I am here")
+    console.log("existing category")
+    console.log(existingCategory)
 
     if (existingCategory) {
       const newBookmark = await Bookmark.create({
@@ -36,17 +37,19 @@ export const createBookmark = async (req, res) => {
         category : existingCategory._id,
         userId: req.user._id,
       });
+      console.log("New Bookmark")
       console.log(newBookmark)
       return res.status(201).json(newBookmark);
     }
 
-    console.log("I am here")
-
-
+ 
     const newCategory = await Category.create({
-      name: "facebook",
+      name: predictCategoryData.category,
       userId: req.user._id,
     });
+    
+    console.log("new category")
+    console.log(newCategory)
 
     const newBookmark = await Bookmark.create({
       title,
@@ -55,11 +58,13 @@ export const createBookmark = async (req, res) => {
       userId: req.user._id,
     });
 
-    console.log("I am here")
-    
+    console.log("new Bookmark")
     console.log(newBookmark)
+
     res.status(201).json(newBookmark);
   } catch (err) {
+    console.log("error in creating bookmark")
+    console.log(err)
     res.status(500).json({ error: err.message });
   }
 };

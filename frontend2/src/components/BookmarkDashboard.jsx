@@ -106,6 +106,7 @@ export default function BookmarkDashboard() {
             <CategoryView
               category={getCategoryWithChildren(selectedCategory)}
               bookmarks={bookmarks}
+              onBreadcrumbClick={handleBreadcrumbClick}
             />
           ) : (
             <BookmarkGrid
