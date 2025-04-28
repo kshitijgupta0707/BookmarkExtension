@@ -67,8 +67,8 @@ export const Login = ({ setUser }) => {
       //   }, 800);
       //   return;
       // }
-     console.log(e)
-      const response = await fetch(`http://localhost:5000/api/auth/${isSignup ? "signup" : "login"}`, {
+      console.log(e)
+      const response = await fetch(`http://localhost:4000/api/auth/${isSignup ? "signup" : "login"}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -82,7 +82,7 @@ export const Login = ({ setUser }) => {
       if (!response.ok) {
         throw new Error(isSignup ? "Signup failed" : "Login failed");
       }
-      
+
       if (!isSignup) {
         const userData = await response.json();
         safeStorage.set({ token: userData.token, userId: userData.userId, name: userData.name, user: userData });
@@ -106,46 +106,46 @@ export const Login = ({ setUser }) => {
         {isSignup && (
           <div className="space-y-2">
             <label htmlFor="name" className="text-sm font-medium">Name</label>
-            <input 
+            <input
               id="name"
-              type="text" 
-              name="name" 
-              value={formData.name} 
-              onChange={handleChange} 
-              placeholder="Your name" 
-              required 
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Your name"
+              required
               className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         )}
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium">Email</label>
-          <input 
+          <input
             id="email"
-            type="email" 
-            name="email" 
-            value={formData.email} 
-            onChange={handleChange} 
-            placeholder="your@email.com" 
-            required 
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="your@email.com"
+            required
             className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
         <div className="space-y-2">
           <label htmlFor="password" className="text-sm font-medium">Password</label>
-          <input 
+          <input
             id="password"
-            type="password" 
-            name="password" 
-            value={formData.password} 
-            onChange={handleChange} 
-            placeholder="••••••••" 
-            required 
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="••••••••"
+            required
             className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={isLoading}
           className="w-full p-2 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors disabled:opacity-70"
         >
@@ -159,18 +159,18 @@ export const Login = ({ setUser }) => {
           )}
         </button>
       </form>
-      
+
       {error && (
         <Alert variant={error.includes("created") ? "default" : "destructive"} className="mt-4">
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
-      
+
       <p className="text-sm text-center mt-4">
         {isSignup ? "Already have an account? " : "Need an account? "}
-        <button 
-          type="button" 
-          onClick={() => setIsSignup(!isSignup)} 
+        <button
+          type="button"
+          onClick={() => setIsSignup(!isSignup)}
           className="text-primary hover:underline focus:outline-none"
         >
           {isSignup ? "Log In" : "Sign Up"}
