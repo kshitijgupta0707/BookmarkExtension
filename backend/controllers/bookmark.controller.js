@@ -3,7 +3,7 @@ import Category from "../models/category.model.js";
 // Create a new bookmark
 export const createBookmark = async (req, res) => {
   try {
-    console.log("create book mark")
+    console.log("create book mark called")
     const { title, url} = req.body;
 
     // const predictCategory = await fetch(

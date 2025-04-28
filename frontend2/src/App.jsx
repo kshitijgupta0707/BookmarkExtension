@@ -5,6 +5,7 @@ import Signup from "@/components/auth/Signup";
 import { useAuthStore } from './store/useAuthStore';
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
+import ExtensionDashboard from './components/ExtensionDashboard';
 export default function App() {
 
 
@@ -29,6 +30,10 @@ export default function App() {
         <Route 
           path="/dashboard" 
           element={authUser ? <BookmarkDashboard /> : <Navigate to="/login" />} 
+        />
+        <Route 
+          path="/extension" 
+          element={ <ExtensionDashboard />} 
         />
       </Routes>
       <Toaster/>
