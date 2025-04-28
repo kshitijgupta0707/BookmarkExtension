@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ExternalLink, Plus, Trash2, ArrowRightLeft, PencilLine } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { useBookmarkStore } from "@/store/useBookmarkStore";
 import { useCategoryStore } from "@/store/useCategoryStore";
 
 function CategoryView({ category, bookmarks }) {
+  const navigate = useNavigate();
   const { createBookmark, createBookmarkwithExistingCategory, deleteBookmark, moveBookmark, updateBookmark } = useBookmarkStore();
   const { categories, deleteCategory, updateCategory } = useCategoryStore();
 
@@ -23,6 +25,26 @@ function CategoryView({ category, bookmarks }) {
   const [selectedBookmark, setSelectedBookmark] = useState(null);
   const [targetCategory, setTargetCategory] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Set initial editing category name when category changes
+  useEffect(() => {
+    if (category) {
+      setEditingCategoryName(category.name);
+    }
+  }, [category]);
+
+  // Early return if category is null or undefined
+  if (!category) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 bg-gray-800 rounded-lg text-gray-300">
+        <h2 className="text-xl font-medium mb-4">Category not found</h2>
+        <p className="text-gray-400 mb-6">The category may have been deleted or doesn't exist.</p>
+        <Button onClick={() => navigate("/categories")}>
+          Return to Categories
+        </Button>
+      </div>
+    );
+  }
 
   // Get bookmarks for current category
   const categoryBookmarks = bookmarks.filter(b =>
@@ -84,9 +106,6 @@ function CategoryView({ category, bookmarks }) {
   };
 
   const handleMoveBookmark = async () => {
-    console.log("move book mark is called");
-    console.log(selectedBookmark)
-    console.log(targetCategory)
     if (selectedBookmark && targetCategory) {
       setIsSubmitting(true);
       await moveBookmark(selectedBookmark, targetCategory);
@@ -118,8 +137,17 @@ function CategoryView({ category, bookmarks }) {
         alert("Cannot delete category with bookmarks. Please move or delete all bookmarks first.");
         return;
       }
-      console.log("Deleteign the category ", category._id);
-      await deleteCategory(category._id);
+      
+      setIsSubmitting(true);
+      try {
+        await deleteCategory(category._id);
+        // Navigate to categories list after successful deletion
+        navigate("/categories");
+      } catch (error) {
+        console.error("Error deleting category:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -132,28 +160,28 @@ function CategoryView({ category, bookmarks }) {
       return "/placeholder.svg";
     }
   };
-  // Early return if category is null or undefined
-  if (!category) {
-    return <div>Category not found or has been deleted.</div>;
-  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">{category.name}</h2>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={prepareEditCategory}>
+          <Button 
+            variant="outline" 
+            onClick={prepareEditCategory}
+            className="hover:bg-gray-700"
+          >
             <PencilLine size={16} className="mr-1" /> Edit
           </Button>
 
           <Dialog open={openDialog} onOpenChange={setOpenDialog}>
             <DialogTrigger asChild>
-              <Button className="flex items-center gap-2">
+              <Button className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700">
                 <Plus size={16} />
                 <span>Add Bookmark</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white">
+            <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white border-gray-700">
               <DialogHeader>
                 <DialogTitle>Add New Bookmark</DialogTitle>
               </DialogHeader>
@@ -182,21 +210,29 @@ function CategoryView({ category, bookmarks }) {
                     className="bg-gray-800 border-gray-700"
                   />
                 </div>
-                <Button onClick={handleAddBookmark} disabled={isSubmitting}>
+                <Button 
+                  onClick={handleAddBookmark} 
+                  disabled={isSubmitting || !newBookmark.title.trim() || !newBookmark.url.trim()}
+                  className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700"
+                >
                   {isSubmitting ? "Adding..." : "Add Bookmark"}
                 </Button>
               </div>
             </DialogContent>
           </Dialog>
 
-          <Button variant="destructive" onClick={handleDeleteCategory}>
+          <Button 
+            variant="destructive" 
+            onClick={handleDeleteCategory}
+            disabled={isSubmitting}
+          >
             <Trash2 size={16} className="mr-1" /> Delete Category
           </Button>
         </div>
       </div>
 
       <Dialog open={editCategoryDialogOpen} onOpenChange={setEditCategoryDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white">
+        <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white border-gray-700">
           <DialogHeader>
             <DialogTitle>Edit Category</DialogTitle>
           </DialogHeader>
@@ -211,7 +247,11 @@ function CategoryView({ category, bookmarks }) {
                 className="bg-gray-800 border-gray-700"
               />
             </div>
-            <Button onClick={handleUpdateCategory} disabled={isSubmitting}>
+            <Button 
+              onClick={handleUpdateCategory} 
+              disabled={isSubmitting || !editingCategoryName.trim()}
+              className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700"
+            >
               {isSubmitting ? "Updating..." : "Update Category"}
             </Button>
           </div>
@@ -219,7 +259,7 @@ function CategoryView({ category, bookmarks }) {
       </Dialog>
 
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white">
+        <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white border-gray-700">
           <DialogHeader>
             <DialogTitle>Edit Bookmark</DialogTitle>
           </DialogHeader>
@@ -248,7 +288,11 @@ function CategoryView({ category, bookmarks }) {
                 className="bg-gray-800 border-gray-700"
               />
             </div>
-            <Button onClick={handleEditBookmark} disabled={isSubmitting}>
+            <Button 
+              onClick={handleEditBookmark} 
+              disabled={isSubmitting || !editingBookmark?.title?.trim() || !editingBookmark?.url?.trim()}
+              className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700"
+            >
               {isSubmitting ? "Updating..." : "Update Bookmark"}
             </Button>
           </div>
@@ -256,7 +300,7 @@ function CategoryView({ category, bookmarks }) {
       </Dialog>
 
       <Dialog open={moveDialogOpen} onOpenChange={setMoveDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white">
+        <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white border-gray-700">
           <DialogHeader>
             <DialogTitle>Move Bookmark</DialogTitle>
           </DialogHeader>
@@ -267,8 +311,8 @@ function CategoryView({ category, bookmarks }) {
                 <SelectTrigger id="category" className="bg-gray-800 border-gray-700">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-800 text-white">
-                  {categories?.map(cat => (
+                <SelectContent className="bg-gray-800 text-white border-gray-700">
+                  {categories?.filter(cat => cat._id !== category._id).map(cat => (
                     <SelectItem key={cat._id} value={cat._id}>
                       {cat.name}
                     </SelectItem>
@@ -276,7 +320,11 @@ function CategoryView({ category, bookmarks }) {
                 </SelectContent>
               </Select>
             </div>
-            <Button onClick={handleMoveBookmark} disabled={isSubmitting}>
+            <Button 
+              onClick={handleMoveBookmark} 
+              disabled={isSubmitting || !targetCategory}
+              className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700"
+            >
               {isSubmitting ? "Moving..." : "Move Bookmark"}
             </Button>
           </div>
@@ -295,19 +343,19 @@ function CategoryView({ category, bookmarks }) {
                       <img
                         src={getFavicon(bookmark.url)}
                         alt={bookmark.title}
-                        className="w-8 h-8 rounded"
+                        className="w-8 h-8 rounded bg-gray-700"
                         onError={(e) => {
                           e.target.src = "/placeholder.svg";
                         }}
                       />
-                      <CardTitle className="text-lg">{bookmark.title}</CardTitle>
+                      <CardTitle className="text-lg truncate text-wrap">{bookmark.title.length > 15 ? bookmark.title.slice(0,15) + ".." : bookmark.title}</CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent className="text-sm text-gray-400 truncate">
                     {bookmark.url}
                   </CardContent>
                   <CardFooter>
-                    <div className="flex items-center gap-2 ml-auto">
+                    <div className="flex flex-wrap items-center gap-2 ml-auto">
                       <Button
                         variant="ghost"
                         size="sm"
