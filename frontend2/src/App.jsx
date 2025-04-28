@@ -10,7 +10,7 @@ export default function App() {
 
 
 
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { authUser, checkAuth} = useAuthStore();
 
   // Check auth on mount
   useEffect(() => {

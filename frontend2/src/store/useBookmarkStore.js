@@ -50,8 +50,9 @@ export const useBookmarkStore = create((set, get) => ({
     set({ loading: true }); 
     try {
       const res = await axiosInstance.post("/bookmarks/createwithcategory", bookmarkData);
+      console.log("create bookmark with category", res.data)
       set((state) => ({
-        bookmarks: [...state.bookmarks, res.data],
+        bookmarks: [...state.bookmarks, res.data.bookmark],
       }));
       toast.success("Bookmark created");
     } catch (err) {
@@ -95,10 +96,13 @@ export const useBookmarkStore = create((set, get) => ({
 
   moveBookmark: async (id, newCategoryId) => {
     set({ loading: true });
+
+    console.log("move bookmark in store called");
     try {
       const res = await axiosInstance.put(`/bookmarks/move/${id}`, {
         newCategoryId,
       });
+
       set((state) => ({
         bookmarks: state.bookmarks.map((b) =>
           b._id === id ? res.data : b

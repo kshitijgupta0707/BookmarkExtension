@@ -508,10 +508,10 @@ export function Sidebar({
   const { createCategory, createSubCategory } = useCategoryStore();
   
   const [newCategoryName, setNewCategoryName] = useState("");
-  const [newSubCategoryName, setNewSubCategoryName] = useState("");
-  const [addingSubCategoryFor, setAddingSubCategoryFor] = useState(null);
+  // const [newSubCategoryName, setNewSubCategoryName] = useState("");
+  // const [addingSubCategoryFor, setAddingSubCategoryFor] = useState(null);
   const [openCategoryDialog, setOpenCategoryDialog] = useState(false);
-  const [openSubCategoryDialog, setOpenSubCategoryDialog] = useState(false);
+  // const [openSubCategoryDialog, setOpenSubCategoryDialog] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState({});
 
   const handleAddCategory = async () => {
@@ -522,17 +522,17 @@ export function Sidebar({
     }
   };
 
-  const handleAddSubCategory = async () => {
-    if (newSubCategoryName.trim() && addingSubCategoryFor) {
-      await createCategory({ 
-        name: newSubCategoryName, 
-        parent: addingSubCategoryFor 
-      });
-      setNewSubCategoryName("");
-      setAddingSubCategoryFor(null);
-      setOpenSubCategoryDialog(false);
-    }
-  };
+  // const handleAddSubCategory = async () => {
+  //   if (newSubCategoryName.trim() && addingSubCategoryFor) {
+  //     await createCategory({ 
+  //       name: newSubCategoryName, 
+  //       parent: addingSubCategoryFor 
+  //     });
+  //     setNewSubCategoryName("");
+  //     setAddingSubCategoryFor(null);
+  //     setOpenSubCategoryDialog(false);
+  //   }
+  // };
 
   const startAddSubCategory = (categoryId, e) => {
     e.stopPropagation();
@@ -589,14 +589,14 @@ export function Sidebar({
               )}
               <span>{category.name}</span>
             </div>
-            <Button
+            {/* <Button
               variant="ghost"
               size="icon"
               className="h-6 w-6 opacity-0 group-hover:opacity-100 hover:opacity-100"
               onClick={(e) => startAddSubCategory(category._id, e)}
             >
               <Plus size={14} />
-            </Button>
+            </Button> */}
           </div>
 
           {isExpanded && hasChildren && (
@@ -636,7 +636,7 @@ export function Sidebar({
         </Dialog>
       </div>
 
-      <Dialog open={openSubCategoryDialog} onOpenChange={setOpenSubCategoryDialog}>
+      {/* <Dialog open={openSubCategoryDialog} onOpenChange={setOpenSubCategoryDialog}>
         <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white">
           <DialogHeader>
             <DialogTitle>Add New Subcategory</DialogTitle>
@@ -651,7 +651,7 @@ export function Sidebar({
             <Button onClick={handleAddSubCategory}>Add Subcategory</Button>
           </div>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       <nav className="flex-1 p-2">
         <ul className="space-y-1">

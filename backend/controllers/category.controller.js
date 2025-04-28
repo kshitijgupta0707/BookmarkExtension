@@ -3,7 +3,7 @@ import Category from "../models/category.model.js";
 //  Create a new category
 export const createCategory = async (req, res) => {
   try {
-    console.log("Createing the category" , req.body)
+    console.log("Createing the category", req.body)
     const { name } = req.body;
     const category = await Category.create({
       name,
@@ -19,8 +19,10 @@ export const createCategory = async (req, res) => {
 export const getCategoryTree = async (req, res) => {
   try {
     const categories = await Category.find({ userId: req.user._id });
+    console.log("get category tree");
+    console.log("categories retrn are", categories);
     res.json(categories);
-  } catch (err) { 
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -28,6 +30,7 @@ export const getCategoryTree = async (req, res) => {
 //  Update category name
 export const updateCategory = async (req, res) => {
   try {
+    console.log("Update category called")
     const { name } = req.body;
     const updated = await Category.findByIdAndUpdate(req.params.id, { name }, { new: true });
     res.json(updated);
@@ -39,19 +42,13 @@ export const updateCategory = async (req, res) => {
 //  Delete category (and optionally subcategories)
 export const deleteCategory = async (req, res) => {
   try {
+    //add only w
+    // hen you are able to delete when their are no bookmark and users  id same link
+    // to the that category
+    console.log("Delete category called")
     await Category.findByIdAndDelete(req.params.id);
+   
     res.json({ message: "Category deleted" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-//  Move category to a new parent
-export const moveCategory = async (req, res) => {
-  try {
-    const { newParentId } = req.body;
-    const moved = await Category.findByIdAndUpdate(req.params.id, { parent: newParentId || null }, { new: true });
-    res.json(moved);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

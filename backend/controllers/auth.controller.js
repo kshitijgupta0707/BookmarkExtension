@@ -7,7 +7,7 @@ import User from "../models/user.model.js";
 // export const signup = async (req, res) => {
 //   const { name, email, password } = req.body;
 //   console.log("Signup request received:", req.body); // Debugging line
-//     const existingUser = await User.findOne({ email });
+//     const exi  stingUser = await User.findOne({ email });
 //     if (existingUser) {
 //       throw new ExpressError("User already exists", 400);
 //     }
@@ -35,7 +35,7 @@ export const signup = async (req, res) => {
         message: "Password must be at least 6 characters"
       });
     }
- 
+
     //check if user already exist
     //use find one it gives an single object
     const existingUser = await User.findOne({ email });
@@ -51,10 +51,6 @@ export const signup = async (req, res) => {
 
 
     //secure the password
-
-    //optimal round jaida heavy hoga //if kam then can be hacked------------>
-    // AES ke bre mein padhoo //worth it very interesting
-    //Retry startegy to hash password for atleast three times
     let tryy = 0;
     let hashedPassword;
     while (tryy < 3) {
@@ -73,11 +69,11 @@ export const signup = async (req, res) => {
     }
 
     //entry in db
-
     const user = await User.create({
       name, email, password: hashedPassword
     })
-    
+  
+
     return res.status(200).json({
       success: true,
       message: "Account created successfully",
@@ -90,31 +86,7 @@ export const signup = async (req, res) => {
     }).status(500);
   }
 };
-// Login
-// export const login = async (req, res) => {
-//   const { email, password } = req.body;
-//   console.log("Login request received:", req.body); // Debugging line
-//   if (!email || !password) {
-//     throw new ExpressError("Email and password are required", 400);
-//   }
 
-//   const user = await User.findOne({ email });
-//   if (!user || !(await bcrypt.compare(password, user.password))) {
-//     throw new ExpressError("Invalid credentials", 401);
-//   }
-
-//   const options = {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === "production",
-//     //STRICT IF HOSTED TOGETHER
-//      //Allow cross-site cookies
-//     sameSite: process.env.NODE_ENV === "production" ? "None" : "strict",
-//     maxAge: 24 * 60 * 60 * 1000, // 1 day
-//   }
-//   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-//   res.cookie("token" , token,options).status(200).json({ token, userId: user._id, name: user.name });
-
-// };
 
 export const login = async (req, res) => {
   try {

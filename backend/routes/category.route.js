@@ -4,7 +4,7 @@ import {
   getCategoryTree,
   updateCategory,
   deleteCategory,
-  moveCategory
+  // moveCategory
 } from "../controllers/category.controller.js";
 // import { authMiddleware } from "../middleware.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
@@ -17,6 +17,6 @@ router.post("/create", createCategory);
 router.get("/tree", getCategoryTree);
 router.put("/update/:id", updateCategory);
 router.delete("/delete/:id", deleteCategory);
-router.put("/move/:id", moveCategory);
+// router.put("/move/:id", moveCategory);
 
 export default router;

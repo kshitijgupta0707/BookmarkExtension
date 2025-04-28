@@ -6,7 +6,6 @@ const bookmarkSchema = new mongoose.Schema(
     url: { type: String, required: true },
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    // mlCategory: { type: String }, // initially suggested category
   },
   { timestamps: true }
 );

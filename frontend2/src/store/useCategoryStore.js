@@ -51,9 +51,17 @@ export const useCategoryStore = create((set, get) => ({
   deleteCategory: async (id) => {
     set({ loading: true });
     try {
-      await axiosInstance.delete(`/categories/delete/${id}`);
+      const res = await axiosInstance.delete(`/categories/delete/${id}`);
+      console.log("Category deleted")
       toast.success("Category deleted");
-      get().fetchCategoryTree(); // Refresh tree after deletion
+
+      const {categories} = get()
+      let newCategory = categories.filter((cat)=> cat._id !== id)
+
+      set((state) => ({
+        categories: newCategory,
+      }));
+      // get().fetchCategoryTree(); // Refresh tree after deletion
     } catch (err) {
       toast.error("Delete failed");
     } finally {
