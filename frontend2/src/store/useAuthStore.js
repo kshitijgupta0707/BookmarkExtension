@@ -60,6 +60,21 @@
                 set({ isLoggingIn: false });
             }
         },
+        loginWithoutPassword: async (data) => {
+            console.log("Called login with out pass")
+            set({ isLoggingIn: true });
+            try {
+                console.log(data);
+                const res = await axiosInstance.post("/auth/loginWithoutPassword", data);
+                set({ authUser: res.data.responseUser });
+
+                toast.success("Logged in successfully ");
+            } catch (error) {
+                toast.error(error.response.data.message);
+            } finally {
+                set({ isLoggingIn: false });
+            }
+        },
         logout: async () => {
             try {
                 await axiosInstance.post("/auth/logout");

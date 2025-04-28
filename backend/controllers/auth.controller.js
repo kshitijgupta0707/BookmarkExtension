@@ -149,6 +149,61 @@ export const login = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+export const directLoginWithoutPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Check if both fields are provided
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email is required" });
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+
+    const payload = {
+      id: user._id,
+      email: user.email,
+    };
+
+    // Generate JWT token
+    const token = jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      //STRICT IF HOSTED TOGETHER
+      //Allow cross-site cookies
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    }
+
+    const responseUser = user;
+    responseUser.password = ""; // Remove password from response
+
+
+    // Send token in HTTP-only cookie
+    res.cookie("token", token, options).status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      responseUser,
+      // location
+    });
+
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 
 
 export const checkAuth = (req, res) => {

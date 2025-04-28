@@ -37,7 +37,7 @@
 //         title: newBookmark.title,
 //         url: url,
 //       });
-      
+
 //       setNewBookmark({ title: "", url: ""});
 //       setOpenDialog(false);
 //     }
@@ -53,7 +53,7 @@
 //     });
 //     return result;
 //   };
-  
+
 //   const flatCategories = flattenCategories(categories);
 
 //   // Extract favicon from URL
@@ -106,7 +106,7 @@
 //                   className="bg-gray-800 border-gray-700"
 //                 />
 //               </div>
-              
+
 //               <Button onClick={handleAddBookmark}>Add Bookmark</Button>
 //             </div>
 //           </DialogContent>
@@ -245,7 +245,7 @@ export function BookmarkGrid({ bookmarks, categories, onCategorySelect }) {
         title: newBookmark.title,
         url: url,
       });
-      
+
       setNewBookmark({ title: "", url: "" });
       setOpenDialog(false);
       setIsSubmitting(false);
@@ -302,7 +302,7 @@ export function BookmarkGrid({ bookmarks, categories, onCategorySelect }) {
                   className="bg-gray-800 border-gray-700"
                 />
               </div>
-              
+
               <Button onClick={handleAddBookmark} disabled={isSubmitting}>
                 {isSubmitting ? "Adding..." : "Add Bookmark"}
               </Button>
@@ -332,7 +332,9 @@ export function BookmarkGrid({ bookmarks, categories, onCategorySelect }) {
                         e.target.src = "/placeholder.svg";
                       }}
                     />
-                    <CardTitle className="text-lg">{bookmark.title}</CardTitle>
+                    {/* <CardTitle className="text-lg">{bookmark.title}</CardTitle> */}
+                    <CardTitle className="text-lg truncate text-wrap">{bookmark.title.length > 15 ? bookmark.title.slice(0, 15) + ".." : bookmark.title}</CardTitle>
+
                   </div>
                 </CardHeader>
                 <CardContent className="text-sm text-gray-400 truncate">
@@ -370,36 +372,36 @@ export function BookmarkGrid({ bookmarks, categories, onCategorySelect }) {
                 <CardHeader>
                   <CardTitle>{category.name}</CardTitle>
                   <CardDescription className="text-gray-400">
-                    {bookmarks.filter(b => b.category === category._id || 
-                                      (b.category && b.category._id === category._id))
-                                      .length} bookmarks
+                    {bookmarks.filter(b => b.category === category._id ||
+                      (b.category && b.category._id === category._id))
+                      .length} bookmarks
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
                     {bookmarks
-                      .filter(b => b.category === category._id || 
-                             (b.category && b.category._id === category._id))
+                      .filter(b => b.category === category._id ||
+                        (b.category && b.category._id === category._id))
                       .slice(0, 5)
                       .map((bookmark) => (
-                      <img
-                        key={bookmark._id}
-                        src={getFavicon(bookmark.url)}
-                        alt={bookmark.title}
-                        title={bookmark.title}
-                        className="w-6 h-6 rounded"
-                        onError={(e) => {
-                          e.target.src = "/placeholder.svg";
-                        }}
-                      />
-                    ))}
-                    {bookmarks.filter(b => b.category === category._id || 
-                                  (b.category && b.category._id === category._id)).length > 5 && (
-                      <div className="w-6 h-6 rounded bg-gray-700 flex items-center justify-center text-xs">
-                        +{bookmarks.filter(b => b.category === category._id || 
-                          (b.category && b.category._id === category._id)).length - 5}
-                      </div>
-                    )}
+                        <img
+                          key={bookmark._id}
+                          src={getFavicon(bookmark.url)}
+                          alt={bookmark.title}
+                          title={bookmark.title}
+                          className="w-6 h-6 rounded"
+                          onError={(e) => {
+                            e.target.src = "/placeholder.svg";
+                          }}
+                        />
+                      ))}
+                    {bookmarks.filter(b => b.category === category._id ||
+                      (b.category && b.category._id === category._id)).length > 5 && (
+                        <div className="w-6 h-6 rounded bg-gray-700 flex items-center justify-center text-xs">
+                          +{bookmarks.filter(b => b.category === category._id ||
+                            (b.category && b.category._id === category._id)).length - 5}
+                        </div>
+                      )}
                   </div>
                 </CardContent>
               </Card>

@@ -66,12 +66,27 @@ export const SettingsMenu = ({ theme, toggleTheme, user, setUser }) => {
     safeStorage.get("newTab", (data) => setNewTab(data.newTab || false));
   }, []);
 
-  const toggleNewTab = () => {
+  // const toggleNewTab = () => {
+  //   const updatedValue = !newTab;
+  //   setNewTab(updatedValue);
+  //   safeStorage.set({ newTab: updatedValue });
+  // };
+  const toggleNewTab = async () => {
     const updatedValue = !newTab;
     setNewTab(updatedValue);
     safeStorage.set({ newTab: updatedValue });
+  
+    if (updatedValue) {
+      // Only redirect if enabling new tab
+      safeStorage.get("token", (data) => {
+        const token = data.token;
+        if (token) {
+          window.open(`http://localhost:5173/extension?token=${token}`, "_blank");
+        }
+      });
+    }
   };
-
+  
   const handleLogout = () => {
     safeStorage.remove(["token", "userId", "name", "user"]);
     setUser(null);

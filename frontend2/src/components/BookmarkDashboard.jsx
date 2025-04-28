@@ -90,7 +90,7 @@ export default function BookmarkDashboard() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      {/* <Header /> */}
+      <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar
           categories={categories}
